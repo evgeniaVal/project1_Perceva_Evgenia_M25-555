@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from .constants import ROOMS
-from .player_actions import get_input, move_player, show_inventory, take_item
+from .player_actions import get_input, move_player, show_inventory, take_item, use_item
 from .utils import describe_current_room
 
 
@@ -13,7 +13,7 @@ def process_command(game_state, command: str):
         case 'look':
             describe_current_room(game_state)
         case 'use':
-            pass
+            use_item(game_state, arg)
         case 'go':
             move_player(game_state, arg)
         case 'take':

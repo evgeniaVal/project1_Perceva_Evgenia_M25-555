@@ -36,3 +36,19 @@ def take_item(game_state, item_name: str) -> None:
         print(f"Вы подняли: {item_name}")
     else:
         print("Такого предмета здесь нет.")
+
+def use_item(game_state, item_name):
+    inventory = game_state['player_inventory']
+    if item_name not in inventory:
+        print("У вас нет такого предмета.")
+    else:
+        match item_name:
+            case 'torch':
+                print("Вы зажгли факел. Теперь вокруг светлее.")
+            case 'sword':
+                print("Вы взяли меч в руки. Чувствуете себя увереннее.")
+            case 'bronze_box':
+                print("Вы открыли bronze_box и нашли внутри rusty_key.")
+                inventory.append('rusty_key')
+            case _:
+                print(f'Вы не знаете, как использовать {item_name}.')
