@@ -2,7 +2,7 @@
 
 from .constants import ROOMS
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
-from .utils import describe_current_room
+from .utils import describe_current_room, solve_puzzle
 
 
 def process_command(game_state, command: str):
@@ -20,6 +20,8 @@ def process_command(game_state, command: str):
             take_item(game_state, arg)
         case 'inventory':
             show_inventory(game_state)
+        case 'solve':
+            solve_puzzle(game_state)
         case 'quit' | 'exit':
             game_state['game_over'] = True
 
