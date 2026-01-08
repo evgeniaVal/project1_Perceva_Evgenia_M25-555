@@ -68,7 +68,7 @@ def attempt_open_treasure(game_state):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         ROOMS[game_state['current_room']]['items'].remove('treasure_chest')
         game_state['game_over'] = True
-        print("Победа!")
+        print("В сундуке сокровище! Вы победили!")
     else:
         arg = input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
         if arg == 'да':
@@ -78,7 +78,7 @@ def attempt_open_treasure(game_state):
                 print("Код верен! Сундук открыт!")
                 ROOMS[game_state['current_room']]['items'].remove('treasure_chest')
                 game_state['game_over'] = True
-                print("Победа!")
+                print("В сундуке сокровище! Вы победили!")
             else:
                 print("Неверный код.")
         else:
