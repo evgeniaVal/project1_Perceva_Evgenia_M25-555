@@ -27,14 +27,14 @@ def move_player(game_state, direction):
                 print("Вы используете найденный ключ, чтобы открыть путь в комнату" \
                 " сокровищ.")
             else:
-                print("Дверь в комнату сокровищ заперта. Похоже, нужен особый ключ.")
+                print("Дверь заперта. Нужен ключ, чтобы пройти дальше.")
                 return
         game_state['steps_taken'] += 1
         game_state['current_room'] = current_exits[direction]
         describe_current_room(game_state)
         random_event(game_state)
     else:
-        print("Невозможно пойти в этом направлении.")
+        print("Нельзя пойти в этом направлении.")
 
 def take_item(game_state, item_name):
     current_items = ROOMS[game_state['current_room']]['items']
@@ -59,9 +59,8 @@ def use_item(game_state, item_name):
             case 'sword':
                 print("Вы взяли меч в руки. Чувствуете себя увереннее.")
             case 'bronze_box':
-                print("Вы открыли bronze_box и нашли внутри rusty_key.")
                 if 'rusty_key' not in inventory:
-                    inventory.remove(item_name)
+                    print("Вы открыли bronze_box и нашли внутри rusty_key.")
                     inventory.append('rusty_key')
             case _:
                 print(f'Вы не знаете, как использовать {item_name}.')

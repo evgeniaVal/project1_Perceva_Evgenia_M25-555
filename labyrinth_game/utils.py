@@ -1,6 +1,8 @@
 from math import sin
 
-from .constants import COMMANDS, ROOMS
+from labyrinth_game.player_actions import get_input
+
+from .constants import ROOMS
 
 
 def describe_current_room(game_state):
@@ -31,12 +33,15 @@ def solve_puzzle(game_state):
         print("Загадок здесь нет.")
     else:
         print(puzzle[0])
-        if input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
+        if get_input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
             print("Правильно! Загадка решена. Вы получили ключевой предмет.")
             current_room['puzzle'] = None
             game_state['player_inventory'].append('treasure_key')
         else:
-            print("Неверно. Попробуйте снова.")
+            if title != 'trap_room':
+                print("Неверно. Попробуйте снова.")
+            else:
+                trigger_trap(game_state)
 
 def attempt_open_treasure(game_state):
     inventory = game_state['player_inventory']
@@ -44,9 +49,9 @@ def attempt_open_treasure(game_state):
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
         game_state['game_over'] = True
     else:
-        arg = input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
+        arg = get_input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
         if arg == 'да':
-            ans = input("Введите код: ").strip()
+            ans = get_input("Введите код: ").strip()
             if ans == ROOMS['treasure_room']['puzzle'][1]:
                 print("Код верен! Сундук открыт!")
                 ROOMS['treasure_room']['items'].remove('treasure_chest')
@@ -56,7 +61,7 @@ def attempt_open_treasure(game_state):
         else:
             print("Вы отступаете от сундука.")
 
-def show_help():
+def show_help(COMMANDS):
     print("\nДоступные команды:")
     for command, description in COMMANDS.items():
         print(f" {command:<16}: {description}")
