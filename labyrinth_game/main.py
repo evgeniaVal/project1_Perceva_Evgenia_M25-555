@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from .constants import ROOMS
+from .utils import describe_current_room
 
 
 def main() -> None:
@@ -11,6 +12,7 @@ def main() -> None:
         'game_over': False, # Значения окончания игры
         'steps_taken': 0 # Количество шагов
     }
+    describe_current_room(game_state)
 
 if __name__ == "__main__":
     main()
