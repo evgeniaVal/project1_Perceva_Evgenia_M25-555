@@ -22,15 +22,35 @@ def describe_current_room(game_state):
         print('Кажется, здесь есть загадка (используйте команду solve).')
 
 def solve_puzzle(game_state):
-    current_coom = ROOMS[game_state['current_room']]
-    puzzle = current_coom['puzzle']
+    current_room = ROOMS[game_state['current_room']]
+    puzzle = current_room['puzzle']
     if not puzzle:
         print("Загадок здесь нет.")
     else:
-        print(puzzle[0])
-        if input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
-            print("Правильно! Загадка решена.")
-            current_coom['puzzle'] = None
-            game_state['player_inventory'].append('reward')
+        if current_room == 'treasure_room':
+            attempt_open_treasure(game_state)
         else:
-            print("Неверно. Попробуйте снова.")
+            print(puzzle[0])
+            if input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
+                print("Правильно! Загадка решена.")
+                current_room['puzzle'] = None
+                game_state['player_inventory'].append('reward')
+            else:
+                print("Неверно. Попробуйте снова.")
+
+def attempt_open_treasure(game_state):
+    inventory = game_state['player_inventory']
+    if 'treasure_key' in inventory:
+        print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
+        game_state['game_over'] = True
+    else:
+        arg = input("Сундук заперт. ... Ввести код? (да/нет)").strip().lower()
+        if arg == 'да':
+            ans = input("Введите код: ").strip()
+            if ans == ROOMS['treasure_room']['puzzle'][1]:
+                print("Код верен! Сундук открыт!")
+                game_state['game_over'] = True
+            else:
+                print("Неверный код.")
+        else:
+            print("Вы отступаете от сундука.")
