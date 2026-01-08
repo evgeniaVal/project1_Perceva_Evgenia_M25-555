@@ -30,16 +30,13 @@ def solve_puzzle(game_state):
     if not puzzle:
         print("Загадок здесь нет.")
     else:
-        if title == 'treasure_room':
-            attempt_open_treasure(game_state)
+        print(puzzle[0])
+        if input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
+            print("Правильно! Загадка решена. Вы получили ключевой предмет.")
+            current_room['puzzle'] = None
+            game_state['player_inventory'].append('treasure_key')
         else:
-            print(puzzle[0])
-            if input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
-                print("Правильно! Загадка решена. Вы получили ключевой предмет.")
-                current_room['puzzle'] = None
-                game_state['player_inventory'].append('treasure_key')
-            else:
-                print("Неверно. Попробуйте снова.")
+            print("Неверно. Попробуйте снова.")
 
 def attempt_open_treasure(game_state):
     inventory = game_state['player_inventory']
