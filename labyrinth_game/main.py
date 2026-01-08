@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from .constants import ROOMS
+from .player_actions import show_inventory
 from .utils import describe_current_room
 
 
@@ -13,6 +14,7 @@ def main() -> None:
         'steps_taken': 0 # Количество шагов
     }
     describe_current_room(game_state)
+    show_inventory(game_state)
 
 if __name__ == "__main__":
     main()
