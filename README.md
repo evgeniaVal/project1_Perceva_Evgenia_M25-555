@@ -39,4 +39,5 @@ make project
 * ```quit``` - выйти из игры
 ## Демонстрация игрового процесса
 Ниже представлена запись asciinema с полным игровым циклом - от запуска игры до победы.
+
 [![asciinema](https://asciinema.org/a/AfSpw9Vbs1P8eUFe.svg)](https://asciinema.org/a/AfSpw9Vbs1P8eUFe)
