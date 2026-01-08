@@ -1,6 +1,6 @@
 from math import sin
 
-from .constants import ROOMS
+from .constants import COMMANDS, ROOMS
 
 
 def describe_current_room(game_state):
@@ -61,14 +61,8 @@ def attempt_open_treasure(game_state):
 
 def show_help():
     print("\nДоступные команды:")
-    print("  go <direction>  - перейти в направлении (north/south/east/west)")
-    print("  look            - осмотреть текущую комнату")
-    print("  take <item>     - поднять предмет")
-    print("  use <item>      - использовать предмет из инвентаря")
-    print("  inventory       - показать инвентарь")
-    print("  solve           - попытаться решить загадку в комнате")
-    print("  quit            - выйти из игры")
-    print("  help            - показать это сообщение") 
+    for command, description in COMMANDS.items():
+        print(f" {command:<16}: {description}")
 
 def pseudo_random(seed, modulo):
     value = sin(seed) * 12.9898 * 43758.5453

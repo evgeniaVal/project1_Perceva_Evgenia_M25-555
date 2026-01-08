@@ -22,8 +22,16 @@ def get_input(prompt:str="> ") -> str:
 def move_player(game_state, direction: str) -> None:
     current_exits: dict[str, str] = ROOMS[game_state['current_room']]['exits']
     if direction in current_exits:
+        if current_exits[direction] == 'treasure_room':
+            if 'rusty_key' in game_state['player_inventory']:
+                print("Вы используете найденный ключ, чтобы открыть путь в комнату" \
+                " сокровищ.")
+            else:
+                print("Дверь в комнату сокровищ заперта. Похоже, нужен особый ключ.")
+                return
         game_state['steps_taken'] += 1
         game_state['current_room'] = current_exits[direction]
+        print()
         describe_current_room(game_state)
         random_event(game_state)
     else:
@@ -46,7 +54,6 @@ def use_item(game_state, item_name):
     if item_name not in inventory:
         print("У вас нет такого предмета.")
     else:
-        inventory.remove(item_name)
         match item_name:
             case 'torch':
                 print("Вы зажгли факел. Теперь вокруг светлее.")
@@ -55,6 +62,7 @@ def use_item(game_state, item_name):
             case 'bronze_box':
                 print("Вы открыли bronze_box и нашли внутри rusty_key.")
                 if 'rusty_key' not in inventory:
+                    inventory.remove(item_name)
                     inventory.append('rusty_key')
             case _:
                 print(f'Вы не знаете, как использовать {item_name}.')
