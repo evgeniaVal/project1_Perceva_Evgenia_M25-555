@@ -4,7 +4,7 @@ from .player_actions import get_input, move_player, show_inventory, take_item, u
 from .utils import attempt_open_treasure, describe_current_room, show_help, solve_puzzle
 
 
-def process_command(game_state, command: str):
+def process_command(game_state, command):
     parts = command.split()
     if not parts:
         return
@@ -32,7 +32,7 @@ def process_command(game_state, command: str):
         case _:
             print("Неизвестная команда. Введите 'help' для списка команд.")
 
-def main() -> None:
+def main():
     print('Добро пожаловать в Лабиринт сокровищ!')
     game_state = {
         'player_inventory': [], # Инвентарь игрока

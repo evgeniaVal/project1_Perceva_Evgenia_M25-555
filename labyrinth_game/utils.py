@@ -4,11 +4,11 @@ from .constants import COMMANDS, ROOMS
 
 
 def describe_current_room(game_state):
-    title: str = game_state['current_room']
+    title = game_state['current_room']
     current_room = ROOMS[title]
-    description: str = current_room['description']
-    items: list[str] = current_room['items']
-    exits: dict[str, str] = current_room['exits']
+    description = current_room['description']
+    items = current_room['items']
+    exits = current_room['exits']
     puzzle = current_room['puzzle']
 
     print(f'== {title.upper()} ==')

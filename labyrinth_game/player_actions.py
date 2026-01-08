@@ -2,8 +2,8 @@ from .constants import ROOMS
 from .utils import describe_current_room, random_event
 
 
-def show_inventory(game_state) -> None:
-    inventory: list[str] = game_state['player_inventory']
+def show_inventory(game_state):
+    inventory = game_state['player_inventory']
     if not inventory:
         print("Ваш инвентарь пуст.")
     else:
@@ -11,16 +11,16 @@ def show_inventory(game_state) -> None:
         for item in inventory:
             print(f"- {item}")
 
-def get_input(prompt:str="> ") -> str:
+def get_input(prompt="> "):
     try:
-        input_str: str = input(prompt)
+        input_str = input(prompt)
         return input_str.strip()
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
         return "quit"
 
-def move_player(game_state, direction: str) -> None:
-    current_exits: dict[str, str] = ROOMS[game_state['current_room']]['exits']
+def move_player(game_state, direction):
+    current_exits = ROOMS[game_state['current_room']]['exits']
     if direction in current_exits:
         if current_exits[direction] == 'treasure_room':
             if 'rusty_key' in game_state['player_inventory']:
@@ -36,8 +36,8 @@ def move_player(game_state, direction: str) -> None:
     else:
         print("Невозможно пойти в этом направлении.")
 
-def take_item(game_state, item_name: str) -> None:
-    current_items: list[str] = ROOMS[game_state['current_room']]['items']
+def take_item(game_state, item_name):
+    current_items = ROOMS[game_state['current_room']]['items']
     if item_name in current_items:
         if item_name == 'treasure_chest':
             print("Вы не можете поднять сундук, он слишком тяжелый.")
