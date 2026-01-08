@@ -1,7 +1,6 @@
 from math import floor, sin
 
 from .constants import ROOMS
-from .player_actions import get_input
 
 
 def describe_current_room(game_state):
@@ -32,10 +31,10 @@ def solve_puzzle(game_state):
         print("Загадок здесь нет.")
     else:
         print(puzzle[0])
-        if get_input('Ваш ответ: ').strip().lower() == puzzle[1].lower():
-            print("Правильно! Загадка решена. Вы получили ключевой предмет.")
+        if input('Ваш ответ: ').strip().lower() in {x.strip().lower() for x in puzzle[1]}:
+            print(f"Правильно! Загадка решена. Вы получили награду {puzzle[2]}.")
             current_room['puzzle'] = None
-            game_state['player_inventory'].append('treasure_key')
+            game_state['player_inventory'].append(puzzle[2])
         else:
             if title != 'trap_room':
                 print("Неверно. Попробуйте снова.")
@@ -46,15 +45,19 @@ def attempt_open_treasure(game_state):
     inventory = game_state['player_inventory']
     if 'treasure_key' in inventory:
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
+        ROOMS[game_state['current_room']]['items'].remove('treasure_chest')
         game_state['game_over'] = True
+        print("Победа!")
     else:
-        arg = get_input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
+        arg = input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
         if arg == 'да':
-            ans = get_input("Введите код: ").strip()
-            if ans == ROOMS[game_state['current_room']]['puzzle'][1]:
+            ans = input("Введите код: ").strip()
+            if ans in {x.strip().lower() for x in 
+                       ROOMS[game_state['current_room']]['puzzle'][1]}:
                 print("Код верен! Сундук открыт!")
                 ROOMS[game_state['current_room']]['items'].remove('treasure_chest')
                 game_state['game_over'] = True
+                print("Победа!")
             else:
                 print("Неверный код.")
         else:
@@ -80,9 +83,9 @@ def trigger_trap(game_state):
         else:
             print("Вам удалось избежать ловушки на этот раз.")
     else:
-        id = pseudo_random(game_state['steps_taken'], len(inventory))
-        print(f"Вы жертвуете своим {inventory[id]}, чтобы избежать ловушки.")
-        del inventory[id]
+        idx = pseudo_random(game_state['steps_taken'], len(inventory))
+        print(f"Вы жертвуете своим {inventory[idx]}, чтобы избежать ловушки.")
+        del inventory[idx]
 
 def random_event(game_state):
     if pseudo_random(game_state['steps_taken'], 10) == 0:
