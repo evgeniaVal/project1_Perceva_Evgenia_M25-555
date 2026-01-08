@@ -6,6 +6,8 @@ from .utils import describe_current_room, show_help, solve_puzzle
 
 def process_command(game_state, command: str):
     parts = command.split()
+    if not parts:
+        return
     command = parts[0]
     arg = parts[1] if len(parts) > 1 else ''
     match command:
@@ -23,8 +25,10 @@ def process_command(game_state, command: str):
             solve_puzzle(game_state)
         case 'quit' | 'exit':
             game_state['game_over'] = True
-        case _:
+        case 'help':
             show_help()
+        case _:
+            print("Неизвестная команда. Введите 'help' для списка команд.")
 
 def main() -> None:
     print('Добро пожаловать в Лабиринт сокровищ!')

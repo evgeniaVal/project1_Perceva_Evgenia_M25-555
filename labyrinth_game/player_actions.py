@@ -17,7 +17,7 @@ def get_input(prompt:str="> ") -> str:
         return input_str.strip()
     except (KeyboardInterrupt, EOFError):
         print("\nВыход из игры.")
-        exit()
+        return "quit"
 
 def move_player(game_state, direction: str) -> None:
     current_exits: dict[str, str] = ROOMS[game_state['current_room']]['exits']

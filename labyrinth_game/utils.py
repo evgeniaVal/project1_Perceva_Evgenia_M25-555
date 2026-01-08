@@ -50,6 +50,7 @@ def attempt_open_treasure(game_state):
             ans = input("Введите код: ").strip()
             if ans == ROOMS['treasure_room']['puzzle'][1]:
                 print("Код верен! Сундук открыт!")
+                ROOMS['treasure_room']['items'].remove('treasure_chest')
                 game_state['game_over'] = True
             else:
                 print("Неверный код.")
