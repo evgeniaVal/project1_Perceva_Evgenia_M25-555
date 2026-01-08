@@ -15,8 +15,8 @@ def process_command(game_state, command: str):
             describe_current_room(game_state)
         case 'use':
             use_item(game_state, arg)
-        case 'go':
-            move_player(game_state, arg)
+        case 'go' | 'north' | 'south' | 'east' | 'west':
+            move_player(game_state, arg if command == 'go' else command)
         case 'take':
             take_item(game_state, arg)
         case 'inventory':

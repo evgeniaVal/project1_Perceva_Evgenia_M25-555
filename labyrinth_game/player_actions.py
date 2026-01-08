@@ -31,7 +31,6 @@ def move_player(game_state, direction: str) -> None:
                 return
         game_state['steps_taken'] += 1
         game_state['current_room'] = current_exits[direction]
-        print()
         describe_current_room(game_state)
         random_event(game_state)
     else:
