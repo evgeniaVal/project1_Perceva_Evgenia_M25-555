@@ -51,7 +51,7 @@ def attempt_open_treasure(game_state):
     else:
         arg = input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
         if arg == 'да':
-            ans = input("Введите код: ").strip()
+            ans = input("Введите код: ").strip().lower()
             if ans in {x.strip().lower() for x in 
                        ROOMS[game_state['current_room']]['puzzle'][1]}:
                 print("Код верен! Сундук открыт!")
