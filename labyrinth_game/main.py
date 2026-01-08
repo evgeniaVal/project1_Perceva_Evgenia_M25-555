@@ -2,7 +2,7 @@
 
 from .constants import ROOMS
 from .player_actions import get_input, move_player, show_inventory, take_item, use_item
-from .utils import describe_current_room, solve_puzzle
+from .utils import describe_current_room, solve_puzzle, show_help
 
 
 def process_command(game_state, command: str):
@@ -24,6 +24,8 @@ def process_command(game_state, command: str):
             solve_puzzle(game_state)
         case 'quit' | 'exit':
             game_state['game_over'] = True
+        case _:
+            show_help()
 
 def main() -> None:
     print('Добро пожаловать в Лабиринт сокровищ!')

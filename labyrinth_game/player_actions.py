@@ -45,6 +45,7 @@ def use_item(game_state, item_name):
     if item_name not in inventory:
         print("У вас нет такого предмета.")
     else:
+        inventory.remove(item_name)
         match item_name:
             case 'torch':
                 print("Вы зажгли факел. Теперь вокруг светлее.")
