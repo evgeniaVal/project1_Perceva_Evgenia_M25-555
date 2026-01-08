@@ -59,3 +59,7 @@ COMMANDS = {
     "quit": "выйти из игры",
     "help": "показать это сообщение" 
 }
+
+EVENT_PROBABILITY_MODULO = 10
+EVENT_TYPES = 3
+TRAP_DEATH_THRESHOLD = 3

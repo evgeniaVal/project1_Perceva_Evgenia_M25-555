@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "project1-perceva-evgenia-m25-555"
 version = "0.1.0"
-description = ""
+description = "My First Poetry Project"
 authors = ["evgeniaVal <perceva221@gmail.com>"]
 readme = "README.md"
 packages = [

@@ -1,9 +1,19 @@
 from math import floor, sin
 
-from .constants import ROOMS
+from .constants import (
+    EVENT_PROBABILITY_MODULO,
+    EVENT_TYPES,
+    ROOMS,
+    TRAP_DEATH_THRESHOLD,
+)
 
 
 def describe_current_room(game_state):
+    """Отобразить описание текущей комнаты
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
     title = game_state['current_room']
     current_room = ROOMS[title]
     description = current_room['description']
@@ -24,6 +34,11 @@ def describe_current_room(game_state):
         print('Кажется, здесь есть загадка (используйте команду solve).')
 
 def solve_puzzle(game_state):
+    """Попытаться решить загадку.
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
     title = game_state['current_room']
     current_room = ROOMS[title]
     puzzle = current_room['puzzle']
@@ -43,6 +58,11 @@ def solve_puzzle(game_state):
                 trigger_trap(game_state)
 
 def attempt_open_treasure(game_state):
+    """Попытаться открыть сундук с сокровищем
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
     inventory = game_state['player_inventory']
     if 'treasure_key' in inventory:
         print("Вы применяете ключ, и замок щёлкает. Сундук открыт!")
@@ -64,21 +84,41 @@ def attempt_open_treasure(game_state):
         else:
             print("Вы отступаете от сундука.")
 
-def show_help(COMMANDS):
+def show_help(commands):
+    """Отобразить возможные команды.
+
+    Args:
+        commands (dict): Словарь команд и их описаний.
+    """
     print("\nДоступные команды:")
-    for command, description in COMMANDS.items():
+    for command, description in commands.items():
         print(f" {command:<16}: {description}")
 
 def pseudo_random(seed, modulo):
+    """Простейший генератор псевдослучайных чисел
+
+    Args:
+        seed (int): Начальное значение для генератора.
+        modulo (int): Модуль для ограничения диапазона чисел.
+
+    Returns:
+        int: Сгенерированное псевдослучайное число.
+    """
     value = sin(seed * 12.9898) * 43758.5453
     value -= floor(value)
     return int(value * modulo)
 
 def trigger_trap(game_state):
+    """Триггер ловушки
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
     print("Ловушка активирована! Пол стал дрожать...")
     inventory = game_state['player_inventory']
     if not inventory:
-        if pseudo_random(game_state['steps_taken'], 10) < 3:
+        if pseudo_random(game_state['steps_taken'], EVENT_PROBABILITY_MODULO) \
+          < TRAP_DEATH_THRESHOLD:
             game_state['game_over'] = True
             print("Вы попали в ловушку и проиграли!")
         else:
@@ -89,8 +129,13 @@ def trigger_trap(game_state):
         del inventory[idx]
 
 def random_event(game_state):
-    if pseudo_random(game_state['steps_taken'], 10) == 0:
-        match pseudo_random(game_state['steps_taken'], 3):
+    """Триггер случайного события
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
+    if pseudo_random(game_state['steps_taken'], EVENT_PROBABILITY_MODULO) == 0:
+        match pseudo_random(game_state['steps_taken'], EVENT_TYPES):
             case 0:
                 print("Вы нашли на полу монетку!")
                 ROOMS[game_state['current_room']]['items'].append('coin')

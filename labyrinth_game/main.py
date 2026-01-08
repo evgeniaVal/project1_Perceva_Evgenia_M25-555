@@ -6,6 +6,12 @@ from .utils import attempt_open_treasure, describe_current_room, show_help, solv
 
 
 def process_command(game_state, command):
+    """Обработчик команды
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+        command (str): Введенная команда.
+    """
     parts = command.split()
     if not parts:
         return

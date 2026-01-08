@@ -3,6 +3,11 @@ from .utils import describe_current_room, random_event
 
 
 def show_inventory(game_state):
+    """Отобразить инвентарь игрока
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+    """
     inventory = game_state['player_inventory']
     if not inventory:
         print("Ваш инвентарь пуст.")
@@ -12,6 +17,14 @@ def show_inventory(game_state):
             print(f"- {item}")
 
 def get_input(prompt="> "):
+    """Получить ввод пользователя с обработкой исключений.
+
+    Args:
+        prompt (str, optional): Подсказка для ввода. По умолчанию "> ".
+
+    Returns:
+        str: Введенная пользователем строка, очищенная от пробелов.
+    """
     try:
         input_str = input(prompt)
         return input_str.strip()
@@ -20,6 +33,12 @@ def get_input(prompt="> "):
         return "quit"
 
 def move_player(game_state, direction):
+    """Переместить игрока в соседнюю комнату.
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+        direction (str): Направление для перемещения.
+    """
     current_exits = ROOMS[game_state['current_room']]['exits']
     if direction in current_exits:
         if current_exits[direction] == 'treasure_room':
@@ -37,6 +56,12 @@ def move_player(game_state, direction):
         print("Нельзя пойти в этом направлении.")
 
 def take_item(game_state, item_name):
+    """Добавить предмет в инвентарь, удалить из мира
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+        item_name (str): Название предмета для взятия.
+    """
     current_items = ROOMS[game_state['current_room']]['items']
     if item_name in current_items:
         if item_name == 'treasure_chest':
@@ -49,6 +74,12 @@ def take_item(game_state, item_name):
         print("Такого предмета здесь нет.")
 
 def use_item(game_state, item_name):
+    """Использовать предмет из инвентаря
+
+    Args:
+        game_state (dict): Текущее состояние игры.
+        item_name (str): Название предмета для использования.
+    """
     inventory = game_state['player_inventory']
     if item_name not in inventory:
         print("У вас нет такого предмета.")
