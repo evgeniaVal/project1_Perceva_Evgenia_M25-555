@@ -1,3 +1,5 @@
+from math import sin
+
 from .constants import ROOMS
 
 
@@ -67,3 +69,35 @@ def show_help():
     print("  solve           - попытаться решить загадку в комнате")
     print("  quit            - выйти из игры")
     print("  help            - показать это сообщение") 
+
+def pseudo_random(seed, modulo):
+    value = sin(seed) * 12.9898 * 43758.5453
+    value -= int(value)
+    return int(value * modulo)
+
+def trigger_trap(game_state):
+    print("Ловушка активирована! Пол стал дрожать...")
+    inventory = game_state['player_inventory']
+    if not inventory:
+        if pseudo_random(game_state['steps_taken'], 10) < 3:
+            game_state['game_over'] = True
+            print("Вы попали в ловушку и проиграли!")
+        else:
+            print("Вам удалось избежать ловушки на этот раз.")
+    else:
+        del inventory[pseudo_random(game_state['steps_taken'], len(inventory))]
+
+def random_event(game_state):
+    if pseudo_random(game_state['steps_taken'], 10) == 0:
+        match pseudo_random(game_state['steps_taken'], 3):
+            case 0:
+                print("Вы нашли на полу монетку!")
+                ROOMS[game_state['current_room']]['items'].append('coin')
+            case 1:
+                print("Вы услышали странный шум.")
+                if 'sword' in game_state['player_inventory']:
+                    print("Ваш меч отпугивает невидимую угрозу.")
+            case 2:
+                if game_state['current_room'] == 'trap_room' and \
+                  'torch' not in game_state['player_inventory']:
+                    trigger_trap(game_state)
