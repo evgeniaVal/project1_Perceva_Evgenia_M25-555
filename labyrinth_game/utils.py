@@ -31,7 +31,8 @@ def solve_puzzle(game_state):
         print("Загадок здесь нет.")
     else:
         print(puzzle[0])
-        if input('Ваш ответ: ').strip().lower() in {x.strip().lower() for x in puzzle[1]}:
+        if input('Ваш ответ: ').strip().lower() in {x.strip().lower() 
+                                                    for x in puzzle[1]}:
             print(f"Правильно! Загадка решена. Вы получили награду {puzzle[2]}.")
             current_room['puzzle'] = None
             game_state['player_inventory'].append(puzzle[2])
