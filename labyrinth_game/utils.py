@@ -1,8 +1,7 @@
-from math import sin
-
-from labyrinth_game.player_actions import get_input
+from math import floor, sin
 
 from .constants import ROOMS
+from .player_actions import get_input
 
 
 def describe_current_room(game_state):
@@ -52,9 +51,9 @@ def attempt_open_treasure(game_state):
         arg = get_input("Сундук заперт. ... Ввести код? (да/нет): ").strip().lower()
         if arg == 'да':
             ans = get_input("Введите код: ").strip()
-            if ans == ROOMS['treasure_room']['puzzle'][1]:
+            if ans == ROOMS[game_state['current_room']]['puzzle'][1]:
                 print("Код верен! Сундук открыт!")
-                ROOMS['treasure_room']['items'].remove('treasure_chest')
+                ROOMS[game_state['current_room']]['items'].remove('treasure_chest')
                 game_state['game_over'] = True
             else:
                 print("Неверный код.")
@@ -67,8 +66,8 @@ def show_help(COMMANDS):
         print(f" {command:<16}: {description}")
 
 def pseudo_random(seed, modulo):
-    value = sin(seed) * 12.9898 * 43758.5453
-    value -= int(value)
+    value = sin(seed * 12.9898) * 43758.5453
+    value -= floor(value)
     return int(value * modulo)
 
 def trigger_trap(game_state):
@@ -81,7 +80,9 @@ def trigger_trap(game_state):
         else:
             print("Вам удалось избежать ловушки на этот раз.")
     else:
-        del inventory[pseudo_random(game_state['steps_taken'], len(inventory))]
+        id = pseudo_random(game_state['steps_taken'], len(inventory))
+        print(f"Вы жертвуете своим {inventory[id]}, чтобы избежать ловушки.")
+        del inventory[id]
 
 def random_event(game_state):
     if pseudo_random(game_state['steps_taken'], 10) == 0:
@@ -96,4 +97,5 @@ def random_event(game_state):
             case 2:
                 if game_state['current_room'] == 'trap_room' and \
                   'torch' not in game_state['player_inventory']:
+                    print("Вы чувствуете опасность!")
                     trigger_trap(game_state)
